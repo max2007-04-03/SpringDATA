@@ -3,6 +3,7 @@ package ua.opnu.springdata.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ua.opnu.springdata.entity.Note;
+import ua.opnu.springdata.exception.NoteNotFoundException;
 import ua.opnu.springdata.repository.NoteRepository;
 
 import java.util.List;
@@ -30,7 +31,7 @@ public class NoteServiceImpl implements NoteService {
     @Override
     public void update(Note note) {
         if (!noteRepository.existsById(note.getId())) {
-            throw new RuntimeException("Note not found");
+            throw new NoteNotFoundException("Note not found");
         }
         noteRepository.save(note);
     }
@@ -38,6 +39,6 @@ public class NoteServiceImpl implements NoteService {
     @Override
     public Note getById(long id) {
         return noteRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Note not found"));
+                .orElseThrow(() -> new NoteNotFoundException("Note not found"));
     }
 }
